@@ -27,3 +27,9 @@ kubectle describe node 'nodename'  | egrep "engines|ogw|feed|sampler"
 script to scale up/down replicas
 
 while read app; do echo $app; kubectl -n engines scale --replicas=1 deployment/$app; done < EnginesUpgrades.txt
+
+to get complete system wide kuberenets running components 
+
+kubectl get all --all-namespaces
+
+
