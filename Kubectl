@@ -32,4 +32,23 @@ to get complete system wide kuberenets running components
 
 kubectl get all --all-namespaces
 
+to get the service discovery
+
+kubectl -n monitoring get svc 
+kubectl -n monitoring get svc telegraf
+kubectl -n monitoring dscribe svc telegraf 
+
+---
+
+Commands to scale OGW Feed and samplers 
+
+kubectl -n feeds get deployments | grep -v NAME | awk '{print $1}' | xargs kubectl -n feeds scale --replicas=1 deployment
+kubectl -n samplers get deployments | grep -v NAME | awk '{print $1}' | xargs kubectl -n samplers scale --replicas=1 deployment
+kubectl -n ogws get deployments | grep -v NAME | awk '{print $1}' | xargs kubectl -n ogws scale --replicas=1 deployment
+
+
+Feed, Samplers then OGWs -- order to bring up as per Ajmeet
+Nim suggested - Samplers, feed nd OGW
+
+
 

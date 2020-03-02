@@ -1,0 +1,5 @@
+aws-ec1-dev-code1/2
+aws-ec1-dmz-vpn1 ( VPN Server)
+aws-ec1-prod-vpn1 ( For Rancher VPN Access to various exchanges , IPSEC Tunnel , blockchain and sdx - seedcx) (edited) 
+aws-ec1-prod-rancher1/2/3 ( Box which host local rancher cluster)
+aws-ec1-dev-rancher1/2/3 ( Boxes which host dev rancher)

@@ -1,0 +1,10 @@
+restarting all apps from the list above in the correct order (Feed, OGW, Engines, Sampler) as per above
+
+while read app; do echo $app; kubectl -n engines scale --replicas=1 deployment/$app; done < EnginesUpgrades.txt
+
+DB restore :
+----
+
+apk-get install screen 
+apk-get install pv
+
