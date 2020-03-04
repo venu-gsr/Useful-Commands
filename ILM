@@ -5,7 +5,7 @@ Below steps are used to create a ILM policy which will delete the indexs after c
 
 1. Create Life cycle policy
 
-PUT _ilm/policy/delete_policy
+PUT _ilm/policy/infra_delete_policy
 {
   "policy": {
     "phases": {
@@ -13,7 +13,7 @@ PUT _ilm/policy/delete_policy
         "actions": {}
       },
       "delete": {
-        "min_age": “5d",
+        "min_age": “10d",
         "actions": {
           "delete": {} 
         }
@@ -24,13 +24,13 @@ PUT _ilm/policy/delete_policy
 
 2. Applying a policy to index template
 
-PUT _template/my_delete_template
+PUT _template/infra_delete_template
 {
-  "index_patterns": [“infra-*”], 
+  "index_patterns": ["infra-*"], 
   "settings": {
     "number_of_shards": 1,
     "number_of_replicas": 1,
-    "index.lifecycle.name": “delete_policy"
+    "index.lifecycle.name": "infra_delete_policy"
  }
 }
 
