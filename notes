@@ -8,3 +8,17 @@ DB restore :
 apk-get install screen 
 apk-get install pv
 
+
+------
+
+There should be no HUB OGW running in ae1 - they are based in Amazon Tokyo
+
+------
+
+POL exchange in maintenance
+
+6:18
+taking down feed and OGW
+6:19
+@Quentin Dubois I assume there are no engines for it?
+
