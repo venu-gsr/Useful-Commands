@@ -101,7 +101,7 @@ PUT _ilm/policy/ogw_actions_delete_policy
 
 PUT _template/ogw_delete_template
 {
-  "index_patterns": ["ogw-actions-*"], 
+  "index_patterns": ["ogw_actions-*"], 
   "settings": {
     "number_of_shards": 1,
     "number_of_replicas": 1,
