@@ -99,7 +99,7 @@ PUT _ilm/policy/ogw_actions_delete_policy
 
 2. Applying index template to apply on a policy
 
-PUT _template/logstash_delete_template
+PUT _template/ogw_delete_template
 {
   "index_patterns": ["ogw-actions-*"], 
   "settings": {
