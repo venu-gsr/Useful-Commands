@@ -50,5 +50,22 @@ kubectl -n ogws get deployments | grep -v NAME | awk '{print $1}' | xargs kubect
 Feed, Samplers then OGWs -- order to bring up as per Ajmeet
 Nim suggested - Samplers, feed nd OGW
 
+--------
 
+
+kubectl -n feeds describe pod envs | grep -v NAME 
+
+kubectl describe pod envs
+
+kubectl logs dapi-envars-fieldref
+
+
+below script used for JVM vars pulling from all Feeds and OGW's
+
+
+cat app | while read line || [[ -n $line ]];
+do
+   echo $line
+   kubectl -n ogws describe pod $line | grep JVM_OPTS
+done
 

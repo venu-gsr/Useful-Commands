@@ -52,7 +52,7 @@ PUT _ilm/policy/logstash_delete_policy
         "actions": {}
       },
       "delete": {
-        "min_age": "3d",
+        "min_age": "10d",
         "actions": {
           "delete": {} 
         }
@@ -88,7 +88,7 @@ PUT _ilm/policy/ogw_actions_delete_policy
         "actions": {}
       },
       "delete": {
-        "min_age": "15d",
+        "min_age": "10d",
         "actions": {
           "delete": {} 
         }

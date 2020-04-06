@@ -1,0 +1,201 @@
+ 
+Image vs. Container
+• An Image is the application we want to run
+• A Container is an instance of that image running as a process
+• You can have many containers running off the same image
+• Docker's default image "registry" is called Docker Hub(hub.docker.com)
+
+ docker version
+• verified cli can talk to engine
+ docker info
+• most config values of engine
+
+#this will run the container on foreground and when we do ctrl+c the container will be terminated.
+docker container run --publish 80:80 nginx
+
+1. Downloaded image 'nginx' from Docker Hub
+2. Started a new container from that image
+3. Opened port 80 on the host IP
+4. Routes that traffic to the container IP, port 80
+
+#command will run the docker container in the background
+docker container run --publish 80:80 --detach nginx
+ 
+#list the containers which are only running 
+docker container ls
+
+#stopping container using first three digits of container id
+docker container stop 690 
+
+#Command to list all running and stopped containers
+docker container ls -a     
+
+#running the nginx container with name webhost
+docker container run --publish 80:80 --detach --name webhost nginx
+
+#checking the logs of above webhost container
+docker container logs webhost
+
+#will give the information of the running processes inside teh container
+docker container top
+docker container top webhost
+
+#delete running containers
+docker container rm 63f 690 0de
+#if the container state is running use -f option to delete forcefully
+docker container rm -f 63f
+
+What happens in 'docker container run'
+1. Looks for that image locally in image cache, doesn't find anything
+2. Then looks in remote image repository (defaults to Docker Hub)
+3. Downloads the latest version (nginx:latest by default)
+4. Creates new container based on that image and prepares to start
+5. Gives it a virtual IP on a private network inside docker engine
+6. Opens up port 80 on host and forwards to port 80 in container
+7. Starts container by using the CMD in the image Dockerfile
+
+#list the available images on our local system
+docker image ls
+
+What's Going On In Containers
+• docker container top - process list in one container
+• docker container inspect - details of one container config
+• docker container stats - performance stats for all containers
+
+docker container run -d --name nginx nginx
+
+docker container run -d --name mysql -e MYSQL_RANDOM_ROOT_PASSWORD=true mysql
+
+docker container ls
+
+docker container top mysql
+
+docker container top nginx
+
+docker container inspect mysql
+
+docker container stats --help
+
+docker container stats
+
+Getting a Shell Inside Containers
+• docker container run -it - start new container interactively
+• docker container exec -it - run additional command in existing container
+
+#running container in interactive mode, when we run exit inside shell it will terminate the container 
+docker container run -it --name proxy nginx bash
+
+docker container run -it --name ubuntu ubuntu
+
+#to start ubuntu container which is in stop state
+docker container start -ai ubuntu
+
+#exec is used to access already existing running container
+docker container exec --help
+docker container exec -it mysql bash
+
+
+#alpine is linux falvour image which comes with less size and most of the features we need to manually install
+docker pull alpine
+
+docker image ls
+
+#bash will not work by default as bash is not install on alpine so we can use sh and the using apk package manager we can install them
+docker container run -it alpine bash
+docker container run -it alpine sh
+
+Docker Networks Defaults
+• Each container connected to a private virtual network "bridge"
+• Each virtual network routes through NAT firewall on host IP
+• All containers on a virtual network can talk to each other without -p
+• Best practice is to create a new virtual network for each app:
+• network "my_web_app" for mysql and php/apache containers
+• network "my_api" for mongo and nodejs containers
+
+docker container run -p 80:80 --name webhost -d nginx
+
+#shows the details of the ports which are in use from host to container
+docker container port webhost
+
+#go syntax to get only IPAddress
+docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost
+
+ifconfig en0 - to verify the host ip address
+
+Docker Networks Cont.
+• "Batteries Included, But Removable"
+• Defaults work well in many cases, but easy to swap out parts to customize it
+• Make new virtual networks
+• Attach containers to more then one virtual network (or none)
+• Skip virtual networks and use host IP (--net=host)
+• Use different Docker network drivers to gain new abilities
+
+Docker Networks: CLI Management
+• Show networks docker network ls
+• Inspect a network docker network inspect
+• Create a network docker network create --driver
+• Attach a network to container docker network connect
+• Detach a network from container docker network disconnect
+
+docker network ls
+
+docker network inspect bridge
+
+#creates a new network 
+docker network create my_app_net
+
+docker network ls
+
+#running a container to use my_app_net network
+docker container run -d --name new_nginx --network my_app_net nginx
+
+docker network inspect my_app_net
+
+#we can connect a container to multiple networks
+docker network connect network_id conatiner_id
+
+#we can disconnect a container from a networks
+docker network disconnect network_id conatiner_id
+
+Docker Networks: Default Security
+• Create your apps so frontend/backend sit on same Docker network
+• Their inter-communication never leaves host
+• All externally exposed ports closed by default
+• You must manually expose via -p, which is better default security!
+• This gets even better later with Swarm and Overlay networks
+
+Docker Networks: DNS
+• Containers shouldn't rely on IP's for inter-communication
+• DNS for friendly names is built-in if you use custom networks
+• You're using custom networks right?
+• This gets way easier with Docker Compose in future Section
+• Learn how to use --link to enable DNS on default bridge network
+
+docker container ls
+
+docker network inspect container_id
+
+docker container run -d --name my_nginx --network my_app_net nginx
+
+docker container inspect container_id
+
+#trying to check connectivity using DNS name within my_app_net network
+docker container exec -it my_nginx ping new_nginx
+
+docker container exec -it new_nginx ping my_nginx
+
+docker network ls
+
+#we can find the link option if you are using default bridge network
+docker container create --help
+
+#container will run and shell opens when we exit it, it will removed automatically (-rm option)
+docker container run --rm -it centos:7 bash
+
+
+
+
+
+
+
+
